@@ -1,4 +1,6 @@
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
+import { User } from '../../users/entities/user.entity';
+import { Position } from '../../positions/entities/positions.entity';
 
 @ObjectType()
 export class Department {
@@ -14,6 +16,9 @@ export class Department {
   @Field({ nullable: true })
   managerId?: string;
 
+  @Field(() => User, { nullable: true })
+  manager?: User;
+
   @Field()
   createdAt: Date;
 
@@ -28,5 +33,8 @@ export class Department {
 
   @Field(() => Int, { nullable: true })
   employeeCount?: number;
+
+  @Field(() => [Position], { nullable: true })
+  positions?: Position[];
 }
 

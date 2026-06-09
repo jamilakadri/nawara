@@ -51,6 +51,13 @@ let DepartmentsService = class DepartmentsService {
         await this.prisma.department.delete({ where: { id } });
         return this.mapDept(dept);
     }
+    async getPositionsByDepartment(departmentId) {
+        return this.prisma.position.findMany({
+            where: {
+                departmentId: departmentId
+            },
+        });
+    }
     mapDept(dept) {
         return {
             id: dept.id,

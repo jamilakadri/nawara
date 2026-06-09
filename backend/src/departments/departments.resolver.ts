@@ -1,10 +1,16 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, ResolveField, Parent } from '@nestjs/graphql';
 import { DepartmentsService } from './departments.service';
 import { Department } from './entities/departments.entity';
+import { Position } from '../positions/entities/positions.entity';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/entities/user.entity';
 
 @Resolver(() => Department)
 export class DepartmentsResolver {
-  constructor(private readonly service: DepartmentsService) {}
+  constructor(
+    private readonly service: DepartmentsService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Query(() => [Department], { name: 'departments' })
   findAll() {
@@ -28,5 +34,16 @@ export class DepartmentsResolver {
   @Mutation(() => Department, { name: 'deleteDepartment' })
   delete(@Args('id', { type: () => ID }) id: string) {
     return this.service.delete(id);
+  }
+
+  @ResolveField(() => User, { nullable: true })
+  async manager(@Parent() department: Department) {
+    if (!department.managerId) return null;
+    return this.usersService.findOne(department.managerId);
+  }
+
+  @ResolveField(() => [Position], { nullable: true })
+  async positions(@Parent() department: Department) {
+    return this.service.getPositionsByDepartment(department.id);
   }
 }

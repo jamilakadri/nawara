@@ -16,9 +16,9 @@ export declare class NotificationsResolver {
         id: string;
         createdAt: Date;
         title: string;
+        link: string | null;
         userId: string;
         type: string | null;
-        link: string | null;
         message: string;
         isRead: boolean;
     }[]>;
@@ -27,9 +27,9 @@ export declare class NotificationsResolver {
         id: string;
         createdAt: Date;
         title: string;
+        link: string | null;
         userId: string;
         type: string | null;
-        link: string | null;
         message: string;
         isRead: boolean;
     }>;
@@ -38,9 +38,9 @@ export declare class NotificationsResolver {
         id: string;
         createdAt: Date;
         title: string;
+        link: string | null;
         userId: string;
         type: string | null;
-        link: string | null;
         message: string;
         isRead: boolean;
     }>;

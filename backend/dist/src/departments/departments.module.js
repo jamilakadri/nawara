@@ -10,11 +10,13 @@ exports.DepartmentsModule = void 0;
 const common_1 = require("@nestjs/common");
 const departments_service_1 = require("./departments.service");
 const departments_resolver_1 = require("./departments.resolver");
+const users_module_1 = require("../users/users.module");
 let DepartmentsModule = class DepartmentsModule {
 };
 exports.DepartmentsModule = DepartmentsModule;
 exports.DepartmentsModule = DepartmentsModule = __decorate([
     (0, common_1.Module)({
+        imports: [users_module_1.UsersModule],
         providers: [departments_resolver_1.DepartmentsResolver, departments_service_1.DepartmentsService],
     })
 ], DepartmentsModule);

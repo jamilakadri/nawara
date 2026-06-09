@@ -26,6 +26,9 @@ export class Position {
   @Field(() => Number)
   standardDurationDays: number;
 
+  @Field()                        // ✅ ajouté
+  departmentId: string;
+
   @Field()
   createdAt: Date;
 

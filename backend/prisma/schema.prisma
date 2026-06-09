@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -5,7 +8,6 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-
 
 enum Role {
   ADMIN
@@ -58,14 +60,17 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  employeeProfile  Employee?
-  managedTeams     Department[] @relation("DepartmentManager")
-  tasksAssigned    Task[]       @relation("TaskAssignee")
-  tasksCreated     Task[]       @relation("TaskCreator")
-  evaluationsGiven Evaluation[] @relation("Evaluator")
-  feedbacksGiven   Feedback[]   @relation("FeedbackAuthor")
-  notifications    Notification[]
-  auditLogs        AuditLog[]
+  // Relations
+  departmentsManaged      Department[]     @relation("DepartmentManager")
+  employees               Employee[]       @relation("EmployeeUser")
+  assignedTasks           Task[]           @relation("TaskAssignee")
+  createdTasks            Task[]           @relation("TaskCreator")
+  documentValidations     DocumentValidation[]
+  createdEvaluations      Evaluation[]     @relation("Evaluator")
+  feedback                Feedback[]
+  notifications           Notification[]
+  auditLogs               AuditLog[]
+  trialValidations        EmployeeOnboarding[] @relation("TrialValidator")
 }
 
 model Department {
@@ -75,6 +80,7 @@ model Department {
   managerId   String?
   manager     User?    @relation("DepartmentManager", fields: [managerId], references: [id])
   employees   Employee[]
+  positions   Position[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -88,7 +94,8 @@ model Position {
   requiredEquipment     String[]
   mandatoryTrainings    String[]
   standardDurationDays  Int      @default(30)
-  
+  departmentId          String
+  department            Department @relation(fields: [departmentId], references: [id])
   employees             Employee[]
   template              OnboardingTemplate?
   createdAt             DateTime @default(now())
@@ -98,15 +105,14 @@ model Position {
 model Employee {
   id             String   @id @default(uuid())
   userId         String   @unique
-  user           User     @relation(fields: [userId], references: [id])
+  user           User     @relation("EmployeeUser", fields: [userId], references: [id])
   departmentId   String?
   department     Department? @relation(fields: [departmentId], references: [id])
   positionId     String
   position       Position @relation(fields: [positionId], references: [id])
   startDate      DateTime
-  
   onboarding     EmployeeOnboarding?
-  evaluations    Evaluation[] @relation("EvaluatedEmployee")
+  evaluations    Evaluation[]  @relation("EmployeeEvaluations")
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -118,122 +124,118 @@ model OnboardingTemplate {
   positionId  String   @unique
   position    Position @relation(fields: [positionId], references: [id])
   isActive    Boolean  @default(true)
-  
   steps       OnboardingStep[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
 model OnboardingStep {
-  id          String             @id @default(uuid())
-  title       String
+  id         String   @id @default(uuid())
+  title      String
   description String?
-  order       Int
-  templateId  String
-  template    OnboardingTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  
-  tasks       TaskTemplate[]
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  order      Int
+  templateId String
+  template   OnboardingTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  tasks      TaskTemplate[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model TaskTemplate {
-  id               String         @id @default(uuid())
-  title            String
-  description      String?
-  stepId           String
-  step             OnboardingStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  id                  String   @id @default(uuid())
+  title               String
+  description         String?
+  stepId              String
+  step                OnboardingStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
   defaultAssigneeRole Role
-  priority         Priority       @default(MEDIUM)
-  daysToComplete   Int            @default(7)
-  
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  priority            Priority @default(MEDIUM)
+  daysToComplete      Int      @default(7)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
 model EmployeeOnboarding {
-  id          String   @id @default(uuid())
-  employeeId  String   @unique
-  employee    Employee @relation(fields: [employeeId], references: [id])
-  status      OnboardingStatus @default(NOT_STARTED)
-  progress    Float    @default(0)
-  startDate   DateTime @default(now())
-  endDate     DateTime?
-  trialEndDate         DateTime?
-  trialValidated       Boolean?
-  trialValidatedAt     DateTime?
-  trialValidatedById   String?
-  trialComment         String?
-
-  tasks       Task[]
-  documents   Document[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                  String   @id @default(uuid())
+  employeeId          String   @unique
+  employee            Employee @relation(fields: [employeeId], references: [id])
+  status              OnboardingStatus @default(NOT_STARTED)
+  progress            Float    @default(0)
+  startDate           DateTime @default(now())
+  endDate             DateTime?
+  trialEndDate        DateTime?
+  trialValidated      Boolean?
+  trialValidatedAt    DateTime?
+  trialValidatedById  String?
+  trialValidator      User?    @relation("TrialValidator", fields: [trialValidatedById], references: [id])
+  trialComment        String?
+  tasks               Task[]
+  documents           Document[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
 model Task {
-  id             String             @id @default(uuid())
-  title          String
-  description    String?
-  onboardingId   String
-  onboarding     EmployeeOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
-  assigneeId     String?
-  assignee       User?              @relation("TaskAssignee", fields: [assigneeId], references: [id])
-  createdById    String?
-  createdBy      User?              @relation("TaskCreator", fields: [createdById], references: [id])
-  status         TaskStatus         @default(TODO)
-  priority       Priority           @default(MEDIUM)
-  category       TaskCategory       @default(ONBOARDING)
-  dueDate        DateTime
-  completedAt    DateTime?
-  comments       String?
-
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
+  id            String   @id @default(uuid())
+  title         String
+  description   String?
+  onboardingId  String
+  onboarding    EmployeeOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
+  assigneeId    String?
+  assignee      User?    @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  createdById   String?
+  createdBy     User?    @relation("TaskCreator", fields: [createdById], references: [id])
+  status        TaskStatus @default(TODO)
+  priority      Priority @default(MEDIUM)
+  category      TaskCategory @default(ONBOARDING)
+  dueDate       DateTime
+  completedAt   DateTime?
+  comments      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Document {
-  id             String             @id @default(uuid())
+  id             String   @id @default(uuid())
   name           String
   type           String
   url            String
   onboardingId   String
   onboarding     EmployeeOnboarding @relation(fields: [onboardingId], references: [id], onDelete: Cascade)
-  status         DocumentStatus     @default(PENDING)
-  uploadedAt     DateTime           @default(now())
-  
+  status         DocumentStatus @default(PENDING)
   validations    DocumentValidation[]
-  aiAnalysis     AIAnalysisResult?
+  aiAnalysisResult AIAnalysisResult?
+  uploadedAt     DateTime @default(now())
 }
 
 model DocumentValidation {
-  id          String   @id @default(uuid())
-  documentId  String
-  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   validatorId String
-  status      DocumentStatus
-  comments    String?
+  validator  User     @relation(fields: [validatorId], references: [id])
+  status     DocumentStatus
+  comments   String?
   validatedAt DateTime @default(now())
 }
 
 model Evaluation {
-  id              String   @id @default(uuid())
-  employeeId      String
-  employee        Employee @relation("EvaluatedEmployee", fields: [employeeId], references: [id])
-  evaluatorId     String
-  evaluator       User     @relation("Evaluator", fields: [evaluatorId], references: [id])
-  score           Float
-  comments        String?
-  isAutoEvaluation Boolean @default(false)
-  createdAt       DateTime @default(now())
+  id                 String   @id @default(uuid())
+  employeeId         String
+  employee           Employee @relation("EmployeeEvaluations", fields: [employeeId], references: [id])
+  evaluatorId        String
+  evaluator          User     @relation("Evaluator", fields: [evaluatorId], references: [id])
+  score              Float
+  comments           String?
+  isAutoEvaluation   Boolean  @default(false)
+  createdAt          DateTime @default(now())
 }
 
 model Feedback {
-  id          String   @id @default(uuid())
-  authorId    String
-  author      User     @relation("FeedbackAuthor", fields: [authorId], references: [id])
-  content     String
-  createdAt   DateTime @default(now())
+  id        String   @id @default(uuid())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
 }
 
 model Notification {
@@ -260,12 +262,12 @@ model AuditLog {
 }
 
 model AIAnalysisResult {
-  id             String   @id @default(uuid())
-  documentId     String   @unique
-  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  documentType   String
-  confidence     Float
-  extractedData  String
-  missingFields  String[]
-  createdAt      DateTime @default(now())
+  id              String   @id @default(uuid())
+  documentId      String   @unique
+  document        Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentType    String
+  confidence      Float
+  extractedData   String
+  missingFields   String[]
+  createdAt       DateTime @default(now())
 }

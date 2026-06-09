@@ -96,6 +96,7 @@ async function main() {
             requiredEquipment: ['PC portable professionnel', 'Écran externe'],
             mandatoryTrainings: ['Sécurité des données', 'Architecture Microservices'],
             standardDurationDays: 180,
+            department: { connect: { id: itDept.id } },
         },
     });
     const commercialPosition = await prisma.position.create({
@@ -107,6 +108,7 @@ async function main() {
             requiredEquipment: ['Téléphone professionnel', 'Laptop de fonction'],
             mandatoryTrainings: ['Présentation produit', 'Formation CRM Salesforce'],
             standardDurationDays: 180,
+            department: { connect: { id: salesDept.id } },
         },
     });
     const techTemplate = await prisma.onboardingTemplate.create({

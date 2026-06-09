@@ -29,6 +29,7 @@ let PositionsService = class PositionsService {
                 title: data.title,
                 description: data.description,
                 standardDurationDays: data.standardDurationDays ?? 30,
+                departmentId: data.departmentId,
                 requiredSkills: [],
                 mandatoryDocuments: [],
                 requiredEquipment: [],

@@ -53,6 +53,7 @@ CREATE TABLE "Position" (
     "requiredEquipment" TEXT[],
     "mandatoryTrainings" TEXT[],
     "standardDurationDays" INTEGER NOT NULL DEFAULT 30,
+    "departmentId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -257,6 +258,9 @@ CREATE UNIQUE INDEX "AIAnalysisResult_documentId_key" ON "AIAnalysisResult"("doc
 
 -- AddForeignKey
 ALTER TABLE "Department" ADD CONSTRAINT "Department_managerId_fkey" FOREIGN KEY ("managerId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Position" ADD CONSTRAINT "Position_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Employee" ADD CONSTRAINT "Employee_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

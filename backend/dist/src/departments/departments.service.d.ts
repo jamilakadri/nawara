@@ -50,5 +50,18 @@ export declare class DepartmentsService {
         managerLastName: any;
         employeeCount: any;
     }>;
+    getPositionsByDepartment(departmentId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        title: string;
+        requiredSkills: string[];
+        mandatoryDocuments: string[];
+        requiredEquipment: string[];
+        mandatoryTrainings: string[];
+        standardDurationDays: number;
+        departmentId: string;
+    }[]>;
     private mapDept;
 }

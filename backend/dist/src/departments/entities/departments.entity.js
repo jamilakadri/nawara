@@ -11,16 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Department = void 0;
 const graphql_1 = require("@nestjs/graphql");
+const user_entity_1 = require("../../users/entities/user.entity");
+const positions_entity_1 = require("../../positions/entities/positions.entity");
 let Department = class Department {
     id;
     name;
     description;
     managerId;
+    manager;
     createdAt;
     updatedAt;
     managerFirstName;
     managerLastName;
     employeeCount;
+    positions;
 };
 exports.Department = Department;
 __decorate([
@@ -39,6 +43,10 @@ __decorate([
     (0, graphql_1.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], Department.prototype, "managerId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => user_entity_1.User, { nullable: true }),
+    __metadata("design:type", user_entity_1.User)
+], Department.prototype, "manager", void 0);
 __decorate([
     (0, graphql_1.Field)(),
     __metadata("design:type", Date)
@@ -59,6 +67,10 @@ __decorate([
     (0, graphql_1.Field)(() => graphql_1.Int, { nullable: true }),
     __metadata("design:type", Number)
 ], Department.prototype, "employeeCount", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => [positions_entity_1.Position], { nullable: true }),
+    __metadata("design:type", Array)
+], Department.prototype, "positions", void 0);
 exports.Department = Department = __decorate([
     (0, graphql_1.ObjectType)()
 ], Department);

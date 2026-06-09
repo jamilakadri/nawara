@@ -19,10 +19,11 @@ export class PositionsResolver {
   @Mutation(() => Position, { name: 'createPosition' })
   create(
     @Args('title') title: string,
+    @Args('departmentId') departmentId: string,
     @Args('description', { nullable: true }) description?: string,
     @Args('standardDurationDays', { type: () => Int, nullable: true }) standardDurationDays?: number,
   ) {
-    return this.positionsService.create({ title, description, standardDurationDays });
+    return this.positionsService.create({ title, departmentId, description, standardDurationDays });
   }
 
   @Mutation(() => Position, { name: 'deletePosition' })

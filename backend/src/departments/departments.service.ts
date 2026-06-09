@@ -42,6 +42,14 @@ export class DepartmentsService {
     return this.mapDept(dept);
   }
 
+  async getPositionsByDepartment(departmentId: string) {
+    return this.prisma.position.findMany({
+      where: { 
+        departmentId: departmentId
+      },
+    });
+  }
+
   private mapDept(dept: any) {
     return {
       id: dept.id,

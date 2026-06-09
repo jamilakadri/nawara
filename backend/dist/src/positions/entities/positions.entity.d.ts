@@ -7,6 +7,7 @@ export declare class Position {
     requiredEquipment: string[];
     mandatoryTrainings: string[];
     standardDurationDays: number;
+    departmentId: string;
     createdAt: Date;
     updatedAt: Date;
 }

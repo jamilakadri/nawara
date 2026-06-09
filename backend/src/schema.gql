@@ -43,10 +43,12 @@ type Department {
   description: String
   employeeCount: Int
   id: ID!
+  manager: User
   managerFirstName: String
   managerId: String
   managerLastName: String
   name: String!
+  positions: [Position!]
   updatedAt: DateTime!
 }
 
@@ -143,7 +145,7 @@ type Mutation {
   createNotification(message: String!, title: String!, userId: ID!): NotificationEntity!
   createOnboardingStep(description: String, order: Int!, templateId: String!, title: String!): OnboardingStepEntity!
   createOnboardingTemplate(description: String, name: String!, positionId: String!): OnboardingTemplate!
-  createPosition(description: String, standardDurationDays: Int, title: String!): Position!
+  createPosition(departmentId: String!, description: String, standardDurationDays: Int, title: String!): Position!
   createTask(assigneeId: String, category: TaskCategory!, createdById: String, description: String, dueDate: String!, onboardingId: String!, priority: String!, title: String!): Task!
   createTaskTemplate(daysToComplete: Int!, defaultAssigneeRole: String!, description: String, priority: String!, stepId: String!, title: String!): TaskTemplateEntity!
   createUser(createUserInput: CreateUserInput!): User!
@@ -224,6 +226,7 @@ type OnboardingTemplateDetail {
 
 type Position {
   createdAt: DateTime!
+  departmentId: String!
   description: String
   id: ID!
   mandatoryDocuments: [String!]!

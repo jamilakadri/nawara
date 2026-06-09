@@ -20,6 +20,7 @@ let Position = class Position {
     requiredEquipment;
     mandatoryTrainings;
     standardDurationDays;
+    departmentId;
     createdAt;
     updatedAt;
 };
@@ -56,6 +57,10 @@ __decorate([
     (0, graphql_1.Field)(() => Number),
     __metadata("design:type", Number)
 ], Position.prototype, "standardDurationDays", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    __metadata("design:type", String)
+], Position.prototype, "departmentId", void 0);
 __decorate([
     (0, graphql_1.Field)(),
     __metadata("design:type", Date)

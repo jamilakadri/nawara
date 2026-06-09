@@ -27,8 +27,8 @@ let PositionsResolver = class PositionsResolver {
     findOne(id) {
         return this.positionsService.findOne(id);
     }
-    create(title, description, standardDurationDays) {
-        return this.positionsService.create({ title, description, standardDurationDays });
+    create(title, departmentId, description, standardDurationDays) {
+        return this.positionsService.create({ title, departmentId, description, standardDurationDays });
     }
     delete(id) {
         return this.positionsService.delete(id);
@@ -51,10 +51,11 @@ __decorate([
 __decorate([
     (0, graphql_1.Mutation)(() => positions_entity_1.Position, { name: 'createPosition' }),
     __param(0, (0, graphql_1.Args)('title')),
-    __param(1, (0, graphql_1.Args)('description', { nullable: true })),
-    __param(2, (0, graphql_1.Args)('standardDurationDays', { type: () => graphql_1.Int, nullable: true })),
+    __param(1, (0, graphql_1.Args)('departmentId')),
+    __param(2, (0, graphql_1.Args)('description', { nullable: true })),
+    __param(3, (0, graphql_1.Args)('standardDurationDays', { type: () => graphql_1.Int, nullable: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Number]),
+    __metadata("design:paramtypes", [String, String, String, Number]),
     __metadata("design:returntype", void 0)
 ], PositionsResolver.prototype, "create", null);
 __decorate([

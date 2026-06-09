@@ -17,12 +17,14 @@ export class PositionsService {
     title: string;
     description?: string;
     standardDurationDays?: number;
+    departmentId: string;
   }) {
     return this.prisma.position.create({
       data: {
         title: data.title,
         description: data.description,
         standardDurationDays: data.standardDurationDays ?? 30,
+        departmentId: data.departmentId,
         requiredSkills: [],
         mandatoryDocuments: [],
         requiredEquipment: [],

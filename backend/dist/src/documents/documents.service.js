@@ -28,7 +28,7 @@ let DocumentsService = class DocumentsService {
         const docs = await this.prisma.document.findMany({
             include: {
                 onboarding: { include: { employee: { include: { user: true } } } },
-                aiAnalysis: true,
+                aiAnalysisResult: true,
             },
             orderBy: { uploadedAt: 'desc' },
         });
@@ -39,7 +39,7 @@ let DocumentsService = class DocumentsService {
             where: { id },
             include: {
                 onboarding: { include: { employee: { include: { user: true } } } },
-                aiAnalysis: true,
+                aiAnalysisResult: true,
             },
         });
         if (!doc)
@@ -51,7 +51,7 @@ let DocumentsService = class DocumentsService {
             where: { onboardingId },
             include: {
                 onboarding: { include: { employee: { include: { user: true } } } },
-                aiAnalysis: true,
+                aiAnalysisResult: true,
             },
             orderBy: { uploadedAt: 'desc' },
         });
@@ -68,7 +68,7 @@ let DocumentsService = class DocumentsService {
             },
             include: {
                 onboarding: { include: { employee: { include: { user: true, department: true } } } },
-                aiAnalysis: true,
+                aiAnalysisResult: true,
             },
         });
         try {
@@ -98,13 +98,13 @@ let DocumentsService = class DocumentsService {
             data: { status: client_1.DocumentStatus.VALIDATED },
             include: {
                 onboarding: { include: { employee: { include: { user: true } } } },
-                aiAnalysis: true,
+                aiAnalysisResult: true,
             },
         });
         await this.prisma.documentValidation.create({
             data: { documentId: id, validatorId, status: client_1.DocumentStatus.VALIDATED },
         });
-        let validatorLabel = 'l\'équipe RH';
+        let validatorLabel = "l'équipe RH";
         const validator = await this.prisma.user.findUnique({
             where: { id: validatorId },
             select: { firstName: true, lastName: true },
@@ -124,13 +124,13 @@ let DocumentsService = class DocumentsService {
             data: { status: client_1.DocumentStatus.REJECTED },
             include: {
                 onboarding: { include: { employee: { include: { user: true } } } },
-                aiAnalysis: true,
+                aiAnalysisResult: true,
             },
         });
         await this.prisma.documentValidation.create({
             data: { documentId: id, validatorId, status: client_1.DocumentStatus.REJECTED, comments },
         });
-        let validatorLabel = 'l\'équipe RH';
+        let validatorLabel = "l'équipe RH";
         const validator = await this.prisma.user.findUnique({
             where: { id: validatorId },
             select: { firstName: true, lastName: true },
@@ -155,7 +155,7 @@ let DocumentsService = class DocumentsService {
             uploadedAt: doc.uploadedAt,
             employeeFirstName: doc.onboarding?.employee?.user?.firstName,
             employeeLastName: doc.onboarding?.employee?.user?.lastName,
-            aiScore: doc.aiAnalysis ? Math.round(doc.aiAnalysis.confidence * 100) : null,
+            aiScore: doc.aiAnalysisResult ? Math.round(doc.aiAnalysisResult.confidence * 100) : null,
         };
     }
 };

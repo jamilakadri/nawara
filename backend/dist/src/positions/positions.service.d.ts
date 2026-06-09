@@ -13,6 +13,7 @@ export declare class PositionsService {
         requiredEquipment: string[];
         mandatoryTrainings: string[];
         standardDurationDays: number;
+        departmentId: string;
     }[]>;
     findOne(id: string): import("@prisma/client").Prisma.Prisma__PositionClient<{
         id: string;
@@ -25,11 +26,13 @@ export declare class PositionsService {
         requiredEquipment: string[];
         mandatoryTrainings: string[];
         standardDurationDays: number;
+        departmentId: string;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     create(data: {
         title: string;
         description?: string;
         standardDurationDays?: number;
+        departmentId: string;
     }): Promise<{
         id: string;
         createdAt: Date;
@@ -41,6 +44,7 @@ export declare class PositionsService {
         requiredEquipment: string[];
         mandatoryTrainings: string[];
         standardDurationDays: number;
+        departmentId: string;
     }>;
     delete(id: string): Promise<{
         id: string;
@@ -53,5 +57,6 @@ export declare class PositionsService {
         requiredEquipment: string[];
         mandatoryTrainings: string[];
         standardDurationDays: number;
+        departmentId: string;
     }>;
 }

@@ -16,7 +16,7 @@ export class DocumentsService {
     const docs = await this.prisma.document.findMany({
       include: {
         onboarding: { include: { employee: { include: { user: true } } } },
-        aiAnalysis: true,
+        aiAnalysisResult: true,
       },
       orderBy: { uploadedAt: 'desc' },
     });
@@ -28,7 +28,7 @@ export class DocumentsService {
       where: { id },
       include: {
         onboarding: { include: { employee: { include: { user: true } } } },
-        aiAnalysis: true,
+        aiAnalysisResult: true,
       },
     });
     if (!doc) throw new NotFoundException(`Document ${id} not found`);
@@ -40,7 +40,7 @@ export class DocumentsService {
       where: { onboardingId },
       include: {
         onboarding: { include: { employee: { include: { user: true } } } },
-        aiAnalysis: true,
+        aiAnalysisResult: true,
       },
       orderBy: { uploadedAt: 'desc' },
     });
@@ -58,7 +58,7 @@ export class DocumentsService {
       },
       include: {
         onboarding: { include: { employee: { include: { user: true, department: true } } } },
-        aiAnalysis: true,
+        aiAnalysisResult: true,
       },
     });
 
@@ -72,7 +72,7 @@ export class DocumentsService {
 
     const employeeName = `${doc.onboarding?.employee?.user?.firstName ?? ''} ${doc.onboarding?.employee?.user?.lastName ?? ''}`.trim();
 
-    // 1. Notify ALL HR administrators that a new document was submitted
+    // 1. Notify ALL HR administrators
     const adminIds = await this.notifications.findAdminUserIds();
     if (adminIds.length > 0) {
       await this.notifications.notifyMultipleUsers(
@@ -87,8 +87,7 @@ export class DocumentsService {
     // 2. Notify the department manager if applicable
     const employeeId = doc.onboarding?.employee?.id;
     if (employeeId) {
-      const managerId =
-        await this.notifications.findEmployeeDepartmentManagerId(employeeId);
+      const managerId = await this.notifications.findEmployeeDepartmentManagerId(employeeId);
       if (managerId && !adminIds.includes(managerId)) {
         await this.notifications.notifyUser(
           managerId,
@@ -109,15 +108,14 @@ export class DocumentsService {
       data: { status: DocumentStatus.VALIDATED },
       include: {
         onboarding: { include: { employee: { include: { user: true } } } },
-        aiAnalysis: true,
+        aiAnalysisResult: true,
       },
     });
     await this.prisma.documentValidation.create({
       data: { documentId: id, validatorId, status: DocumentStatus.VALIDATED },
     });
 
-    // Resolve validator name
-    let validatorLabel = 'l\'équipe RH';
+    let validatorLabel = "l'équipe RH";
     const validator = await this.prisma.user.findUnique({
       where: { id: validatorId },
       select: { firstName: true, lastName: true },
@@ -126,7 +124,6 @@ export class DocumentsService {
       validatorLabel = `${validator.firstName} ${validator.lastName}`;
     }
 
-    // Notify employee
     const userId = doc.onboarding?.employee?.userId;
     if (userId) {
       await this.notifications.notifyUser(
@@ -146,15 +143,14 @@ export class DocumentsService {
       data: { status: DocumentStatus.REJECTED },
       include: {
         onboarding: { include: { employee: { include: { user: true } } } },
-        aiAnalysis: true,
+        aiAnalysisResult: true,
       },
     });
     await this.prisma.documentValidation.create({
       data: { documentId: id, validatorId, status: DocumentStatus.REJECTED, comments },
     });
 
-    // Resolve validator name
-    let validatorLabel = 'l\'équipe RH';
+    let validatorLabel = "l'équipe RH";
     const validator = await this.prisma.user.findUnique({
       where: { id: validatorId },
       select: { firstName: true, lastName: true },
@@ -163,7 +159,6 @@ export class DocumentsService {
       validatorLabel = `${validator.firstName} ${validator.lastName}`;
     }
 
-    // Notify employee
     const userId = doc.onboarding?.employee?.userId;
     if (userId) {
       await this.notifications.notifyUser(
@@ -188,7 +183,7 @@ export class DocumentsService {
       uploadedAt: doc.uploadedAt,
       employeeFirstName: doc.onboarding?.employee?.user?.firstName,
       employeeLastName: doc.onboarding?.employee?.user?.lastName,
-      aiScore: doc.aiAnalysis ? Math.round(doc.aiAnalysis.confidence * 100) : null,
+      aiScore: doc.aiAnalysisResult ? Math.round(doc.aiAnalysisResult.confidence * 100) : null,
     };
   }
 }
