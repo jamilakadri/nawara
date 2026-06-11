@@ -53,7 +53,7 @@ export default function EmployeeDashboard() { console.log("Rendering EmployeeDas
         const emp = empRes?.employeeByUserId;
 
         if (!emp) {
-          // User has EMPLOYEE role but no Employee record yet (being configured by admin)
+          // User has SALARIE role but no Employee record yet (being configured by admin)
           setNoProfile(true);
           return;
         }
@@ -225,14 +225,14 @@ export default function EmployeeDashboard() { console.log("Rendering EmployeeDas
                   <h3 className="text-lg font-bold mb-2">Conseil du Jour</h3>
                   <p className="text-indigo-50 text-sm leading-relaxed">
                     {pendingDocs > 0
-                      ? `Vous avez ${pendingDocs} document(s) en attente. Vérifiez "Mes Documents".`
+                      ? `Vous avez ${pendingDocs} document(s) en attente. Vérifiez "Mon Profil".`
                       : "Prenez le temps de lire le manuel de l'employé."
                     }
                   </p>
                 </div>
                 <div className="relative z-10 mt-4">
                   <a href="/employee/documents" className="inline-flex bg-white text-indigo-600 font-semibold px-4 py-2 rounded-xl text-xs shadow-sm hover:bg-indigo-50 transition-colors w-full justify-center">
-                    Mes documents <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                    Mon profil <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                   </a>
                 </div>
               </div>

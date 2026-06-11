@@ -120,7 +120,7 @@ let TasksService = class TasksService {
             });
             if (validator) {
                 validatorLabel =
-                    validator.role === 'ADMIN'
+                    validator.role === 'ADMINRH'
                         ? `l'équipe RH (${validator.firstName} ${validator.lastName})`
                         : `${validator.firstName} ${validator.lastName}`;
             }
@@ -147,7 +147,7 @@ let TasksService = class TasksService {
             });
             if (validator) {
                 validatorLabel =
-                    validator.role === 'ADMIN'
+                    validator.role === 'ADMINRH'
                         ? `l'équipe RH (${validator.firstName} ${validator.lastName})`
                         : `${validator.firstName} ${validator.lastName}`;
             }

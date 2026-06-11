@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class EmployeesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notifications: NotificationsService,
+  ) {}
 
   async findAll() {
     const employees = await this.prisma.employee.findMany({
@@ -33,7 +37,7 @@ export class EmployeesService {
   }
 
   async findByUserId(userId: string) {
-    const emp = await this.prisma.employee.findUnique({
+    const emp = await this.prisma.employee.findFirst({
       where: { userId },
       include: {
         user: true,
@@ -77,7 +81,7 @@ export class EmployeesService {
         firstName,
         lastName,
         password: hashedPassword,
-        role: 'EMPLOYEE',
+        role: 'SALARIE',
       },
     });
 
@@ -116,6 +120,33 @@ export class EmployeesService {
     return this.mapEmployee(emp);
   }
 
+  async updateEmployeeProfile(id: string, data: { phone?: string; additionalInfo?: string }) {
+    const emp = await this.prisma.employee.update({
+      where: { id },
+      data,
+      include: {
+        user: true,
+        position: true,
+        department: true,
+        onboarding: true,
+      },
+    });
+
+    const employeeName = `${emp.user?.firstName ?? ''} ${emp.user?.lastName ?? ''}`.trim();
+    const adminIds = await this.notifications.findAdminUserIds();
+    if (adminIds.length > 0) {
+      await this.notifications.notifyMultipleUsers(
+        adminIds,
+        '📩 Mise à jour du profil salarié',
+        `${employeeName} a mis à jour son profil : téléphone = ${data.phone ?? 'N/A'}, infos supplémentaires = ${data.additionalInfo ?? 'N/A'}.`,
+        'PROFILE',
+        '/admin/users',
+      );
+    }
+
+    return this.mapEmployee(emp);
+  }
+
   private mapEmployee(emp: any) {
     return {
       id: emp.id,
@@ -128,6 +159,8 @@ export class EmployeesService {
       userEmail: emp.user?.email,
       userFirstName: emp.user?.firstName,
       userLastName: emp.user?.lastName,
+      phone: emp.phone,
+      additionalInfo: emp.additionalInfo,
       positionTitle: emp.position?.title,
       departmentName: emp.department?.name,
       onboardingStatus: emp.onboarding?.status,

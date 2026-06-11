@@ -14,4 +14,10 @@ export class CreateUserInput {
 
   @Field(() => Role, { nullable: true })
   role?: Role;
+
+  @Field({ nullable: true })
+  positionId?: string;
+
+  @Field({ nullable: true })
+  startDate?: string;
 }

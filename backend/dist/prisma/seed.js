@@ -64,19 +64,19 @@ async function main() {
     await prisma.user.deleteMany();
     const password = await bcrypt.hash('password123', 10);
     const admin = await prisma.user.create({
-        data: { email: 'fatma.benali@smarthr.tn', password, firstName: 'Fatma', lastName: 'Ben Ali', role: client_1.Role.ADMIN },
+        data: { email: 'fatma.benali@smarthr.tn', password, firstName: 'Fatma', lastName: 'Ben Ali', role: client_1.Role.ADMINRH },
     });
     const manager = await prisma.user.create({
         data: { email: 'sami.trabelsi@smarthr.tn', password, firstName: 'Sami', lastName: 'Trabelsi', role: client_1.Role.MANAGER },
     });
     const employeeUser = await prisma.user.create({
-        data: { email: 'aymen.khlifi@smarthr.tn', password, firstName: 'Aymen', lastName: 'Khlifi', role: client_1.Role.EMPLOYEE },
+        data: { email: 'aymen.khlifi@smarthr.tn', password, firstName: 'Aymen', lastName: 'Khlifi', role: client_1.Role.SALARIE },
     });
     const commercialUser = await prisma.user.create({
-        data: { email: 'nour.mansouri@smarthr.tn', password, firstName: 'Nour', lastName: 'Mansouri', role: client_1.Role.EMPLOYEE },
+        data: { email: 'nour.mansouri@smarthr.tn', password, firstName: 'Nour', lastName: 'Mansouri', role: client_1.Role.SALARIE },
     });
     const designUser = await prisma.user.create({
-        data: { email: 'kais.saidi@smarthr.tn', password, firstName: 'Kais', lastName: 'Saidi', role: client_1.Role.EMPLOYEE },
+        data: { email: 'kais.saidi@smarthr.tn', password, firstName: 'Kais', lastName: 'Saidi', role: client_1.Role.SALARIE },
     });
     const itDept = await prisma.department.create({
         data: { name: 'Ingénierie & Tech', description: 'Département technique tunisien', managerId: manager.id },
@@ -118,10 +118,10 @@ async function main() {
     const ts2 = await prisma.onboardingStep.create({ data: { title: 'Semaine 2 : Immersion Technique', order: 2, templateId: techTemplate.id } });
     await prisma.taskTemplate.createMany({
         data: [
-            { title: 'Signer et uploader le contrat', stepId: ts1.id, defaultAssigneeRole: client_1.Role.EMPLOYEE, priority: client_1.Priority.CRITICAL, daysToComplete: 2 },
-            { title: 'Configurer le poste et les accès', stepId: ts1.id, defaultAssigneeRole: client_1.Role.EMPLOYEE, priority: client_1.Priority.HIGH, daysToComplete: 3 },
+            { title: 'Signer et uploader le contrat', stepId: ts1.id, defaultAssigneeRole: client_1.Role.SALARIE, priority: client_1.Priority.CRITICAL, daysToComplete: 2 },
+            { title: 'Configurer le poste et les accès', stepId: ts1.id, defaultAssigneeRole: client_1.Role.SALARIE, priority: client_1.Priority.HIGH, daysToComplete: 3 },
             { title: "Présentation de l'architecture du projet", stepId: ts2.id, defaultAssigneeRole: client_1.Role.MANAGER, priority: client_1.Priority.HIGH, daysToComplete: 10 },
-            { title: 'Premier commit sur le dépôt Git', stepId: ts2.id, defaultAssigneeRole: client_1.Role.EMPLOYEE, priority: client_1.Priority.MEDIUM, daysToComplete: 14 },
+            { title: 'Premier commit sur le dépôt Git', stepId: ts2.id, defaultAssigneeRole: client_1.Role.SALARIE, priority: client_1.Priority.MEDIUM, daysToComplete: 14 },
         ],
     });
     const commTemplate = await prisma.onboardingTemplate.create({
@@ -138,12 +138,12 @@ async function main() {
     const cp4 = await prisma.onboardingStep.create({ data: { title: 'Phase 4 – Validation', order: 4, templateId: commTemplate.id } });
     await prisma.taskTemplate.createMany({
         data: [
-            { title: 'Préparer le matériel', stepId: cp1.id, defaultAssigneeRole: client_1.Role.ADMIN, priority: client_1.Priority.HIGH, daysToComplete: -3 },
-            { title: 'Créer les accès (email + CRM)', stepId: cp1.id, defaultAssigneeRole: client_1.Role.ADMIN, priority: client_1.Priority.CRITICAL, daysToComplete: -2 },
-            { title: 'Prendre connaissance de son parcours', stepId: cp1.id, defaultAssigneeRole: client_1.Role.EMPLOYEE, priority: client_1.Priority.MEDIUM, daysToComplete: -1 },
-            { title: 'Regarder vidéo de présentation entreprise', stepId: cp2.id, defaultAssigneeRole: client_1.Role.EMPLOYEE, priority: client_1.Priority.HIGH, daysToComplete: 1 },
-            { title: 'Formation CRM', stepId: cp2.id, defaultAssigneeRole: client_1.Role.EMPLOYEE, priority: client_1.Priority.CRITICAL, daysToComplete: 2 },
-            { title: "Quiz – Compréhension de l'offre", stepId: cp2.id, defaultAssigneeRole: client_1.Role.EMPLOYEE, priority: client_1.Priority.HIGH, daysToComplete: 3 },
+            { title: 'Préparer le matériel', stepId: cp1.id, defaultAssigneeRole: client_1.Role.ADMINRH, priority: client_1.Priority.HIGH, daysToComplete: -3 },
+            { title: 'Créer les accès (email + CRM)', stepId: cp1.id, defaultAssigneeRole: client_1.Role.ADMINRH, priority: client_1.Priority.CRITICAL, daysToComplete: -2 },
+            { title: 'Prendre connaissance de son parcours', stepId: cp1.id, defaultAssigneeRole: client_1.Role.SALARIE, priority: client_1.Priority.MEDIUM, daysToComplete: -1 },
+            { title: 'Regarder vidéo de présentation entreprise', stepId: cp2.id, defaultAssigneeRole: client_1.Role.SALARIE, priority: client_1.Priority.HIGH, daysToComplete: 1 },
+            { title: 'Formation CRM', stepId: cp2.id, defaultAssigneeRole: client_1.Role.SALARIE, priority: client_1.Priority.CRITICAL, daysToComplete: 2 },
+            { title: "Quiz – Compréhension de l'offre", stepId: cp2.id, defaultAssigneeRole: client_1.Role.SALARIE, priority: client_1.Priority.HIGH, daysToComplete: 3 },
             { title: 'Présentation équipe', stepId: cp2.id, defaultAssigneeRole: client_1.Role.MANAGER, priority: client_1.Priority.MEDIUM, daysToComplete: 1 },
             { title: 'Shadowing commercial senior', stepId: cp3.id, defaultAssigneeRole: client_1.Role.MANAGER, priority: client_1.Priority.HIGH, daysToComplete: 5 },
             { title: 'Simulation de pitch', stepId: cp3.id, defaultAssigneeRole: client_1.Role.MANAGER, priority: client_1.Priority.HIGH, daysToComplete: 7 },

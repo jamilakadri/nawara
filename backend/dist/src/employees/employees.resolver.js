@@ -40,6 +40,9 @@ let EmployeesResolver = class EmployeesResolver {
     update(id, positionId, departmentId) {
         return this.employeesService.updateEmployee(id, { positionId, departmentId });
     }
+    updateProfile(id, phone, additionalInfo) {
+        return this.employeesService.updateEmployeeProfile(id, { phone, additionalInfo });
+    }
 };
 exports.EmployeesResolver = EmployeesResolver;
 __decorate([
@@ -88,6 +91,15 @@ __decorate([
     __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", void 0)
 ], EmployeesResolver.prototype, "update", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => employees_entity_1.Employee, { name: 'updateEmployeeProfile' }),
+    __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.ID })),
+    __param(1, (0, graphql_1.Args)('phone', { nullable: true })),
+    __param(2, (0, graphql_1.Args)('additionalInfo', { nullable: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", void 0)
+], EmployeesResolver.prototype, "updateProfile", null);
 exports.EmployeesResolver = EmployeesResolver = __decorate([
     (0, graphql_1.Resolver)(() => employees_entity_1.Employee),
     __metadata("design:paramtypes", [employees_service_1.EmployeesService])

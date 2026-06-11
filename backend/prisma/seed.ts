@@ -33,19 +33,19 @@ async function main() {
 
   // 1. Création des utilisateurs clés
   const admin = await prisma.user.create({
-    data: { email: 'fatma.benali@smarthr.tn', password, firstName: 'Fatma', lastName: 'Ben Ali', role: Role.ADMIN },
+    data: { email: 'fatma.benali@smarthr.tn', password, firstName: 'Fatma', lastName: 'Ben Ali', role: Role.ADMINRH },
   });
   const manager = await prisma.user.create({
     data: { email: 'sami.trabelsi@smarthr.tn', password, firstName: 'Sami', lastName: 'Trabelsi', role: Role.MANAGER },
   });
   const employeeUser = await prisma.user.create({
-    data: { email: 'aymen.khlifi@smarthr.tn', password, firstName: 'Aymen', lastName: 'Khlifi', role: Role.EMPLOYEE },
+    data: { email: 'aymen.khlifi@smarthr.tn', password, firstName: 'Aymen', lastName: 'Khlifi', role: Role.SALARIE },
   });
   const commercialUser = await prisma.user.create({
-    data: { email: 'nour.mansouri@smarthr.tn', password, firstName: 'Nour', lastName: 'Mansouri', role: Role.EMPLOYEE },
+    data: { email: 'nour.mansouri@smarthr.tn', password, firstName: 'Nour', lastName: 'Mansouri', role: Role.SALARIE },
   });
   const designUser = await prisma.user.create({
-    data: { email: 'kais.saidi@smarthr.tn', password, firstName: 'Kais', lastName: 'Saidi', role: Role.EMPLOYEE },
+    data: { email: 'kais.saidi@smarthr.tn', password, firstName: 'Kais', lastName: 'Saidi', role: Role.SALARIE },
   });
 
   // 2. Départements
@@ -94,10 +94,10 @@ async function main() {
   const ts2 = await prisma.onboardingStep.create({ data: { title: 'Semaine 2 : Immersion Technique', order: 2, templateId: techTemplate.id } });
   await prisma.taskTemplate.createMany({
     data: [
-      { title: 'Signer et uploader le contrat', stepId: ts1.id, defaultAssigneeRole: Role.EMPLOYEE, priority: Priority.CRITICAL, daysToComplete: 2 },
-      { title: 'Configurer le poste et les accès', stepId: ts1.id, defaultAssigneeRole: Role.EMPLOYEE, priority: Priority.HIGH, daysToComplete: 3 },
+      { title: 'Signer et uploader le contrat', stepId: ts1.id, defaultAssigneeRole: Role.SALARIE, priority: Priority.CRITICAL, daysToComplete: 2 },
+      { title: 'Configurer le poste et les accès', stepId: ts1.id, defaultAssigneeRole: Role.SALARIE, priority: Priority.HIGH, daysToComplete: 3 },
       { title: "Présentation de l'architecture du projet", stepId: ts2.id, defaultAssigneeRole: Role.MANAGER, priority: Priority.HIGH, daysToComplete: 10 },
-      { title: 'Premier commit sur le dépôt Git', stepId: ts2.id, defaultAssigneeRole: Role.EMPLOYEE, priority: Priority.MEDIUM, daysToComplete: 14 },
+      { title: 'Premier commit sur le dépôt Git', stepId: ts2.id, defaultAssigneeRole: Role.SALARIE, priority: Priority.MEDIUM, daysToComplete: 14 },
     ],
   });
 
@@ -117,12 +117,12 @@ async function main() {
 
   await prisma.taskTemplate.createMany({
     data: [
-      { title: 'Préparer le matériel', stepId: cp1.id, defaultAssigneeRole: Role.ADMIN, priority: Priority.HIGH, daysToComplete: -3 },
-      { title: 'Créer les accès (email + CRM)', stepId: cp1.id, defaultAssigneeRole: Role.ADMIN, priority: Priority.CRITICAL, daysToComplete: -2 },
-      { title: 'Prendre connaissance de son parcours', stepId: cp1.id, defaultAssigneeRole: Role.EMPLOYEE, priority: Priority.MEDIUM, daysToComplete: -1 },
-      { title: 'Regarder vidéo de présentation entreprise', stepId: cp2.id, defaultAssigneeRole: Role.EMPLOYEE, priority: Priority.HIGH, daysToComplete: 1 },
-      { title: 'Formation CRM', stepId: cp2.id, defaultAssigneeRole: Role.EMPLOYEE, priority: Priority.CRITICAL, daysToComplete: 2 },
-      { title: "Quiz – Compréhension de l'offre", stepId: cp2.id, defaultAssigneeRole: Role.EMPLOYEE, priority: Priority.HIGH, daysToComplete: 3 },
+      { title: 'Préparer le matériel', stepId: cp1.id, defaultAssigneeRole: Role.ADMINRH, priority: Priority.HIGH, daysToComplete: -3 },
+      { title: 'Créer les accès (email + CRM)', stepId: cp1.id, defaultAssigneeRole: Role.ADMINRH, priority: Priority.CRITICAL, daysToComplete: -2 },
+      { title: 'Prendre connaissance de son parcours', stepId: cp1.id, defaultAssigneeRole: Role.SALARIE, priority: Priority.MEDIUM, daysToComplete: -1 },
+      { title: 'Regarder vidéo de présentation entreprise', stepId: cp2.id, defaultAssigneeRole: Role.SALARIE, priority: Priority.HIGH, daysToComplete: 1 },
+      { title: 'Formation CRM', stepId: cp2.id, defaultAssigneeRole: Role.SALARIE, priority: Priority.CRITICAL, daysToComplete: 2 },
+      { title: "Quiz – Compréhension de l'offre", stepId: cp2.id, defaultAssigneeRole: Role.SALARIE, priority: Priority.HIGH, daysToComplete: 3 },
       { title: 'Présentation équipe', stepId: cp2.id, defaultAssigneeRole: Role.MANAGER, priority: Priority.MEDIUM, daysToComplete: 1 },
       { title: 'Shadowing commercial senior', stepId: cp3.id, defaultAssigneeRole: Role.MANAGER, priority: Priority.HIGH, daysToComplete: 5 },
       { title: 'Simulation de pitch', stepId: cp3.id, defaultAssigneeRole: Role.MANAGER, priority: Priority.HIGH, daysToComplete: 7 },

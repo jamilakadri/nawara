@@ -19,11 +19,18 @@ type AuthResponse {
   user: User!
 }
 
+type ChangePasswordResponse {
+  message: String!
+  success: Boolean!
+}
+
 input CreateUserInput {
   email: String!
   firstName: String!
   lastName: String!
+  positionId: String
   role: Role
+  startDate: String
 }
 
 type DashboardStats {
@@ -80,6 +87,7 @@ enum DocumentStatus {
 }
 
 type Employee {
+  additionalInfo: String
   createdAt: DateTime!
   departmentId: String
   departmentName: String
@@ -87,6 +95,7 @@ type Employee {
   onboardingId: String
   onboardingProgress: Float
   onboardingStatus: String
+  phone: String
   positionId: String!
   positionTitle: String
   startDate: DateTime!
@@ -139,6 +148,7 @@ input LoginInput {
 type Mutation {
   addDocument(name: String!, onboardingId: ID!, type: String!, url: String!): Document!
   assignTask(assigneeId: ID!, id: ID!): Task!
+  changePassword(currentPassword: String!, newPassword: String!, userId: ID!): ChangePasswordResponse!
   createDepartment(description: String, managerId: String, name: String!): Department!
   createEmployee(departmentId: ID, email: String!, firstName: String!, lastName: String!, positionId: ID!): Employee!
   createEvaluation(comments: String, employeeId: ID!, evaluatorId: ID!, isAutoEvaluation: Boolean, score: Float!): Evaluation!
@@ -163,6 +173,7 @@ type Mutation {
   setTrialEndDate(id: ID!, trialEndDate: String!): EmployeeOnboarding!
   toggleTemplateActive(id: ID!): OnboardingTemplate!
   updateEmployee(departmentId: ID, id: ID!, positionId: ID): Employee!
+  updateEmployeeProfile(additionalInfo: String, id: ID!, phone: String): Employee!
   updateTaskStatus(id: ID!, status: TaskStatus!): Task!
   updateUser(email: String, firstName: String, id: ID!, isActive: Boolean, lastName: String, role: Role): User!
   validateDocument(id: ID!, validatorId: ID!): Document!
@@ -282,9 +293,9 @@ type Query {
 }
 
 enum Role {
-  ADMIN
-  EMPLOYEE
+  ADMINRH
   MANAGER
+  SALARIE
 }
 
 type Task {

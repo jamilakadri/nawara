@@ -34,6 +34,12 @@ export class Employee {
   userLastName?: string;
 
   @Field({ nullable: true })
+  phone?: string;
+
+  @Field({ nullable: true })
+  additionalInfo?: string;
+
+  @Field({ nullable: true })
   positionTitle?: string;
 
   @Field({ nullable: true })

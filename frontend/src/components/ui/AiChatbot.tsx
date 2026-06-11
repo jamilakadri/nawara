@@ -23,13 +23,13 @@ interface ChatMessage {
 }
 
 const WELCOME_MESSAGES: Record<string, string> = {
-  EMPLOYEE: "Bonjour ! 👋 Je suis votre assistant d'intégration. Comment puis-je vous aider ?",
+  SALARIE: "Bonjour ! 👋 Je suis votre assistant d'intégration. Comment puis-je vous aider ?",
   MANAGER: "Bonjour ! 👋 Je suis votre assistant de management. Comment puis-je vous aider ?",
-  ADMIN: "Bonjour ! 👋 Je suis votre assistant RH intelligent. Comment puis-je vous aider ?",
+  ADMINRH: "Bonjour ! 👋 Je suis votre assistant RH intelligent. Comment puis-je vous aider ?",
 };
 
 const INITIAL_SUGGESTIONS: Record<string, string[]> = {
-  EMPLOYEE: [
+  SALARIE: [
     "Quels documents dois-je soumettre ?",
     "Où trouver mes tâches ?",
     "Comment fonctionne la période d'essai ?",
@@ -39,7 +39,7 @@ const INITIAL_SUGGESTIONS: Record<string, string[]> = {
     "Voir la progression de mon équipe",
     "Gérer une période d'essai",
   ],
-  ADMIN: [
+  ADMINRH: [
     "Voir les analytics RH",
     "Comment valider des documents ?",
     "Intégrer un nouvel employé",
@@ -56,7 +56,7 @@ export function AiChatbot() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const role = user?.role || "EMPLOYEE";
+  const role = user?.role || "SALARIE";
 
   // Initialize with welcome message
   useEffect(() => {
@@ -65,11 +65,11 @@ export function AiChatbot() {
         {
           id: "welcome",
           role: "ai",
-          content: WELCOME_MESSAGES[role] || WELCOME_MESSAGES.EMPLOYEE,
+          content: WELCOME_MESSAGES[role] || WELCOME_MESSAGES.SALARIE,
           timestamp: new Date(),
         },
       ]);
-      setSuggestions(INITIAL_SUGGESTIONS[role] || INITIAL_SUGGESTIONS.EMPLOYEE);
+      setSuggestions(INITIAL_SUGGESTIONS[role] || INITIAL_SUGGESTIONS.SALARIE);
     }
   }, [open, role]);
 

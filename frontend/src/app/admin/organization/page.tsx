@@ -157,7 +157,7 @@ export default function OrganizationManagementPage() {
     email: "",
     firstName: "",
     lastName: "",
-    role: "EMPLOYEE",
+    role: "SALARIE",
     positionId: "",
     startDate: new Date().toISOString().split("T")[0],
   });
@@ -281,7 +281,7 @@ export default function OrganizationManagementPage() {
         startDate: form.startDate,
       });
       addToast({ type: "success", title: "Salarié créé", message: `${data.createUser.firstName} ${data.createUser.lastName} a été ajouté avec succès.` });
-      setForm({ email: "", firstName: "", lastName: "", role: "EMPLOYEE", positionId: "", startDate: new Date().toISOString().split("T")[0] });
+      setForm({ email: "", firstName: "", lastName: "", role: "SALARIE", positionId: "", startDate: new Date().toISOString().split("T")[0] });
       setSelectedDept(null);
       setShowModal(false);
     } catch (err: any) {
@@ -403,10 +403,6 @@ export default function OrganizationManagementPage() {
                           <div>
                             <h3 className="font-semibold text-gray-900">{pos.title}</h3>
                             {pos.description && <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{pos.description}</p>}
-                            <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                              <Calendar className="w-3 h-3" />
-                              Durée standard: <span className="font-medium text-gray-700">{pos.standardDurationDays} jours</span>
-                            </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -502,14 +498,7 @@ export default function OrganizationManagementPage() {
               value={posForm.description}
               onChange={(e) => setPosForm((f) => ({ ...f, description: e.target.value }))}
             />
-            <Field
-              label="Durée standard (jours)"
-              type="number"
-              min="1"
-              max="365"
-              value={posForm.standardDurationDays}
-              onChange={(e) => setPosForm((f) => ({ ...f, standardDurationDays: e.target.value }))}
-            />
+            
             <div className="flex gap-3 pt-2">
               <button
                 type="button"
@@ -639,9 +628,9 @@ export default function OrganizationManagementPage() {
                   <label className="block text-sm font-semibold text-gray-700 mb-1">Rôle *</label>
                   <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}
                     className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900">
-                    <option value="EMPLOYEE">Salarié</option>
+                    <option value="SALARIE">Salarié</option>
                     <option value="MANAGER">Manager</option>
-                    <option value="ADMIN">RH / Admin</option>
+                    <option value="ADMINRH">RH / Admin</option>
                   </select>
                 </div>
                 <div>

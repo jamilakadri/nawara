@@ -47,20 +47,43 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const bcrypt = __importStar(require("bcrypt"));
 const client_1 = require("@prisma/client");
+const mail_service_1 = require("../mail/mail.service");
 let UsersService = class UsersService {
     prisma;
-    constructor(prisma) {
+    mailService;
+    constructor(prisma, mailService) {
         this.prisma = prisma;
+        this.mailService = mailService;
     }
     async create(createUserInput) {
-        const hashedPassword = await bcrypt.hash('password123', 10);
-        return this.prisma.user.create({
+        const rawPassword = Math.random().toString(36).slice(-10) + 'A1!';
+        const hashedPassword = await bcrypt.hash(rawPassword, 10);
+        const user = await this.prisma.user.create({
             data: {
-                ...createUserInput,
+                email: createUserInput.email,
+                firstName: createUserInput.firstName,
+                lastName: createUserInput.lastName,
                 password: hashedPassword,
-                role: createUserInput.role || client_1.Role.EMPLOYEE,
+                role: createUserInput.role || client_1.Role.SALARIE,
             },
         });
+        await this.mailService.sendWelcomeEmail(createUserInput.email, createUserInput.firstName || createUserInput.email.split('@')[0], rawPassword);
+        if (createUserInput.positionId) {
+            const position = await this.prisma.position.findUnique({
+                where: { id: createUserInput.positionId },
+            });
+            await this.prisma.employee.create({
+                data: {
+                    userId: user.id,
+                    positionId: createUserInput.positionId,
+                    departmentId: position?.departmentId ?? null,
+                    startDate: createUserInput.startDate
+                        ? new Date(createUserInput.startDate)
+                        : new Date(),
+                },
+            });
+        }
+        return user;
     }
     findAll() {
         return this.prisma.user.findMany();
@@ -115,6 +138,6 @@ let UsersService = class UsersService {
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService, mail_service_1.MailService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

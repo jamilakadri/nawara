@@ -13,6 +13,8 @@ export declare class EmployeesResolver {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;
@@ -30,6 +32,8 @@ export declare class EmployeesResolver {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;
@@ -47,6 +51,8 @@ export declare class EmployeesResolver {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;
@@ -70,6 +76,8 @@ export declare class EmployeesResolver {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;
@@ -87,6 +95,27 @@ export declare class EmployeesResolver {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
+        positionTitle: any;
+        departmentName: any;
+        onboardingStatus: any;
+        onboardingProgress: any;
+        onboardingId: any;
+    }>;
+    updateProfile(id: string, phone?: string, additionalInfo?: string): Promise<{
+        id: any;
+        userId: any;
+        departmentId: any;
+        positionId: any;
+        startDate: any;
+        createdAt: any;
+        updatedAt: any;
+        userEmail: any;
+        userFirstName: any;
+        userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;

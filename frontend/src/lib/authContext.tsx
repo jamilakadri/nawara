@@ -30,7 +30,7 @@ const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext);
 
 function getDashboardPath(role: string): string {
-  if (role === "ADMIN") return "/admin";
+  if (role === "ADMINRH") return "/admin";
   if (role === "MANAGER") return "/manager";
   return "/employee";
 }
@@ -81,9 +81,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const wrongAdmin    = pathname.startsWith("/admin")    && user.role !== "ADMIN";
-    const wrongManager  = pathname.startsWith("/manager")  && user.role !== "MANAGER" && user.role !== "ADMIN";
-    const wrongEmployee = pathname.startsWith("/employee") && user.role !== "EMPLOYEE";
+    const wrongAdmin    = pathname.startsWith("/admin")    && user.role !== "ADMINRH";
+    const wrongManager  = pathname.startsWith("/manager")  && user.role !== "MANAGER" && user.role !== "ADMINRH";
+    const wrongEmployee = pathname.startsWith("/employee") && user.role !== "SALARIE";
 
     if (wrongAdmin || wrongManager || wrongEmployee) {
       router.replace(getDashboardPath(user.role));

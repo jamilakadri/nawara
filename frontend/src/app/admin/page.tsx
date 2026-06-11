@@ -119,7 +119,6 @@ export default function AdminDashboard() {
                       <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${statusColor[ob.status] || "bg-gray-100 text-gray-700"}`}>
                         {statusLabel[ob.status] || ob.status}
                       </span>
-                      <a href={`/admin/employees`} className="text-[10px] font-bold text-indigo-600 hover:underline">Voir dossier →</a>
                     </div>
                   </div>
                 </div>

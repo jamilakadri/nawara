@@ -45,7 +45,7 @@ const DOC_TYPE_MAP = {
     },
 };
 const CHATBOT_KB = {
-    EMPLOYEE: [
+    SALARIE: [
         {
             patterns: ['document', 'soumettre', 'upload', 'téléverser', 'quels documents'],
             response: `Pour compléter votre dossier d'intégration, vous devez soumettre les documents suivants :\n\n📋 **Documents requis :**\n1. **Carte d'Identité Nationale (CIN)** — Scan couleur recto-verso\n2. **Relevé d'Identité Bancaire (RIB)** — Pour le versement de votre salaire\n3. **Curriculum Vitae (CV)** — Version à jour en PDF\n4. **Diplôme(s)** — Copie certifiée conforme\n5. **Photo d'identité** — Format numérique JPG\n\n📌 Rendez-vous dans la section **"Mes Documents"** pour les téléverser.`,
@@ -89,7 +89,7 @@ const CHATBOT_KB = {
             suggestions: ['Quels critères d\'évaluation ?', 'Comment rédiger le commentaire ?', 'Délai de décision ?'],
         },
     ],
-    ADMIN: [
+    ADMINRH: [
         {
             patterns: ['analytics', 'statistiques', 'rapport', 'kpi'],
             response: `Les **analytics RH** sont disponibles dans **"Analytics & Rapports"** :\n\n📊 **KPIs disponibles :**\n- Taux de complétion des intégrations\n- Nombre de documents en attente\n- Répartition par département\n- Évolution mensuelle\n\n📥 Vous pouvez **exporter** les données en PDF ou Excel pour vos comités.`,
@@ -108,7 +108,7 @@ const CHATBOT_KB = {
     ],
 };
 const DEFAULT_RESPONSES = {
-    EMPLOYEE: {
+    SALARIE: {
         response: `Je suis votre **assistant IA d'intégration** 🤖\n\nJe peux vous aider avec :\n- 📄 Vos **documents** à soumettre\n- ✅ Vos **tâches** d'intégration\n- 📊 Votre **progression** et période d'essai\n- 📝 Votre **auto-évaluation**\n\nN'hésitez pas à me poser une question !`,
         suggestions: ['Quels documents dois-je soumettre ?', 'Où sont mes tâches ?', 'Comment fonctionne la période d\'essai ?'],
     },
@@ -116,7 +116,7 @@ const DEFAULT_RESPONSES = {
         response: `Je suis votre **assistant IA de management** 🤖\n\nJe peux vous aider avec :\n- ✅ La **validation** des tâches de votre équipe\n- 👥 Le **suivi** de progression de vos collaborateurs\n- 📋 La gestion des **périodes d'essai**\n- 📊 Les **évaluations** de performance\n\nQue puis-je faire pour vous ?`,
         suggestions: ['Comment valider une tâche ?', 'Voir la progression de mon équipe', 'Gérer une période d\'essai'],
     },
-    ADMIN: {
+    ADMINRH: {
         response: `Je suis votre **assistant IA RH** 🤖\n\nJe peux vous aider avec :\n- 📊 Les **analytics** et rapports RH\n- 📄 La **validation** des documents\n- 👥 L'intégration de **nouveaux employés**\n- ⚙️ La **configuration** de la plateforme\n\nComment puis-je vous assister ?`,
         suggestions: ['Voir les analytics RH', 'Comment valider des documents ?', 'Intégrer un nouvel employé'],
     },
@@ -187,8 +187,8 @@ let AiService = class AiService {
             where: { id: userId },
             select: { role: true, firstName: true },
         });
-        const role = user?.role || 'EMPLOYEE';
-        const kb = CHATBOT_KB[role] || CHATBOT_KB['EMPLOYEE'];
+        const role = user?.role || 'SALARIE';
+        const kb = CHATBOT_KB[role] || CHATBOT_KB['SALARIE'];
         const q = question.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         let bestMatch = null;
         let bestScore = 0;
@@ -217,7 +217,7 @@ let AiService = class AiService {
                 suggestedQuestions: bestMatch.suggestions,
             };
         }
-        const defaults = DEFAULT_RESPONSES[role] || DEFAULT_RESPONSES['EMPLOYEE'];
+        const defaults = DEFAULT_RESPONSES[role] || DEFAULT_RESPONSES['SALARIE'];
         return {
             response: `Je n'ai pas trouvé de réponse précise à votre question. ${defaults.response}`,
             suggestedQuestions: defaults.suggestions,

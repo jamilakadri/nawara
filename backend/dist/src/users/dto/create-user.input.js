@@ -17,6 +17,8 @@ let CreateUserInput = class CreateUserInput {
     firstName;
     lastName;
     role;
+    positionId;
+    startDate;
 };
 exports.CreateUserInput = CreateUserInput;
 __decorate([
@@ -35,6 +37,14 @@ __decorate([
     (0, graphql_1.Field)(() => user_entity_1.Role, { nullable: true }),
     __metadata("design:type", String)
 ], CreateUserInput.prototype, "role", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], CreateUserInput.prototype, "positionId", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], CreateUserInput.prototype, "startDate", void 0);
 exports.CreateUserInput = CreateUserInput = __decorate([
     (0, graphql_1.InputType)()
 ], CreateUserInput);

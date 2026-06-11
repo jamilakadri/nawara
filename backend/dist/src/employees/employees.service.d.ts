@@ -1,7 +1,9 @@
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 export declare class EmployeesService {
     private prisma;
-    constructor(prisma: PrismaService);
+    private notifications;
+    constructor(prisma: PrismaService, notifications: NotificationsService);
     findAll(): Promise<{
         id: any;
         userId: any;
@@ -13,6 +15,8 @@ export declare class EmployeesService {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;
@@ -30,6 +34,8 @@ export declare class EmployeesService {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;
@@ -47,6 +53,8 @@ export declare class EmployeesService {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;
@@ -70,6 +78,8 @@ export declare class EmployeesService {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;
@@ -91,6 +101,30 @@ export declare class EmployeesService {
         userEmail: any;
         userFirstName: any;
         userLastName: any;
+        phone: any;
+        additionalInfo: any;
+        positionTitle: any;
+        departmentName: any;
+        onboardingStatus: any;
+        onboardingProgress: any;
+        onboardingId: any;
+    }>;
+    updateEmployeeProfile(id: string, data: {
+        phone?: string;
+        additionalInfo?: string;
+    }): Promise<{
+        id: any;
+        userId: any;
+        departmentId: any;
+        positionId: any;
+        startDate: any;
+        createdAt: any;
+        updatedAt: any;
+        userEmail: any;
+        userFirstName: any;
+        userLastName: any;
+        phone: any;
+        additionalInfo: any;
         positionTitle: any;
         departmentName: any;
         onboardingStatus: any;

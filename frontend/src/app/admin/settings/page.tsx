@@ -205,7 +205,7 @@ export default function SettingsPage() {
           <p className="text-xs text-gray-500">
             Rôle actuel :{" "}
             <span className="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">
-              {user?.role ?? "ADMIN"}
+              {user?.role ?? "ADMINRH"}
             </span>
           </p>
         </div>

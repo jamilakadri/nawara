@@ -4,4 +4,6 @@ export declare class CreateUserInput {
     firstName: string;
     lastName: string;
     role?: Role;
+    positionId?: string;
+    startDate?: string;
 }

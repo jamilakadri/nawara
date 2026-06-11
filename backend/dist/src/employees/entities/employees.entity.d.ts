@@ -9,6 +9,8 @@ export declare class Employee {
     userEmail?: string;
     userFirstName?: string;
     userLastName?: string;
+    phone?: string;
+    additionalInfo?: string;
     positionTitle?: string;
     departmentName?: string;
     onboardingStatus?: string;

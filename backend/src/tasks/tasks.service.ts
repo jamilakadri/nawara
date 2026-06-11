@@ -119,7 +119,7 @@ export class TasksService {
       });
       if (validator) {
         validatorLabel =
-          validator.role === 'ADMIN'
+          validator.role === 'ADMINRH'
             ? `l'équipe RH (${validator.firstName} ${validator.lastName})`
             : `${validator.firstName} ${validator.lastName}`;
       }
@@ -159,7 +159,7 @@ export class TasksService {
       });
       if (validator) {
         validatorLabel =
-          validator.role === 'ADMIN'
+          validator.role === 'ADMINRH'
             ? `l'équipe RH (${validator.firstName} ${validator.lastName})`
             : `${validator.firstName} ${validator.lastName}`;
       }

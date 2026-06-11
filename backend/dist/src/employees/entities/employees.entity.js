@@ -22,6 +22,8 @@ let Employee = class Employee {
     userEmail;
     userFirstName;
     userLastName;
+    phone;
+    additionalInfo;
     positionTitle;
     departmentName;
     onboardingStatus;
@@ -69,6 +71,14 @@ __decorate([
     (0, graphql_1.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], Employee.prototype, "userLastName", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], Employee.prototype, "phone", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], Employee.prototype, "additionalInfo", void 0);
 __decorate([
     (0, graphql_1.Field)({ nullable: true }),
     __metadata("design:type", String)

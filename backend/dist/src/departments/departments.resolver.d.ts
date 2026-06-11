@@ -51,26 +51,26 @@ export declare class DepartmentsResolver {
     }>;
     manager(department: Department): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         email: string;
         password: string;
         firstName: string;
         lastName: string;
         role: import("@prisma/client").$Enums.Role;
         isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     } | null>;
     positions(department: Department): Promise<{
         id: string;
-        title: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string | null;
+        title: string;
         requiredSkills: string[];
         mandatoryDocuments: string[];
         requiredEquipment: string[];
         mandatoryTrainings: string[];
         standardDurationDays: number;
         departmentId: string;
-        createdAt: Date;
-        updatedAt: Date;
     }[]>;
 }

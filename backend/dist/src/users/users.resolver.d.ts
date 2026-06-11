@@ -1,9 +1,15 @@
 import { UsersService } from './users.service';
 import { Role } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
+import { PrismaService } from '../prisma/prisma.service';
+export declare class ChangePasswordResponse {
+    success: boolean;
+    message: string;
+}
 export declare class UsersResolver {
     private readonly usersService;
-    constructor(usersService: UsersService);
+    private readonly prisma;
+    constructor(usersService: UsersService, prisma: PrismaService);
     createUser(createUserInput: CreateUserInput): Promise<{
         id: string;
         email: string;
@@ -59,4 +65,5 @@ export declare class UsersResolver {
         createdAt: Date;
         updatedAt: Date;
     }>;
+    changePassword(userId: string, currentPassword: string, newPassword: string): Promise<ChangePasswordResponse>;
 }

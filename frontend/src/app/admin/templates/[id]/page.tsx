@@ -57,7 +57,7 @@ const PHASE_COLORS = [
   { bg: "bg-amber-50", border: "border-amber-200", badge: "bg-amber-600", text: "text-amber-700", dot: "bg-amber-500", light: "bg-amber-100" },
 ];
 
-const ROLE_LABELS: Record<string, string> = { ADMIN: "Admin", MANAGER: "Manager", EMPLOYEE: "Collaborateur" };
+const ROLE_LABELS: Record<string, string> = { ADMINRH: "Admin", MANAGER: "Manager", SALARIE: "Collaborateur" };
 const PRIORITY_LABELS: Record<string, { label: string; cls: string }> = {
   CRITICAL: { label: "Critique", cls: "bg-red-100 text-red-700" },
   HIGH: { label: "Haute", cls: "bg-orange-100 text-orange-700" },
@@ -72,7 +72,7 @@ function dayLabel(d: number) {
 }
 
 function TaskTypeIcon({ role }: { role: string }) {
-  if (role === "ADMIN") return <FileText className="w-3.5 h-3.5" />;
+  if (role === "ADMINRH") return <FileText className="w-3.5 h-3.5" />;
   if (role === "MANAGER") return <Users className="w-3.5 h-3.5" />;
   return <BookOpen className="w-3.5 h-3.5" />;
 }
@@ -90,7 +90,7 @@ export default function TemplateDetailPage() {
 
   // Add task modal
   const [activeStepId, setActiveStepId] = useState<string | null>(null);
-  const [taskForm, setTaskForm] = useState({ title: "", description: "", defaultAssigneeRole: "EMPLOYEE", priority: "MEDIUM", daysToComplete: 7 });
+  const [taskForm, setTaskForm] = useState({ title: "", description: "", defaultAssigneeRole: "SALARIE", priority: "MEDIUM", daysToComplete: 7 });
   const [savingTask, setSavingTask] = useState(false);
 
   const [deletingTask, setDeletingTask] = useState<string | null>(null);
@@ -137,7 +137,7 @@ export default function TemplateDetailPage() {
         steps: prev.steps.map((s) => s.id === activeStepId ? { ...s, tasks: [...s.tasks, res.createTaskTemplate] } : s),
       } : prev);
       setActiveStepId(null);
-      setTaskForm({ title: "", description: "", defaultAssigneeRole: "EMPLOYEE", priority: "MEDIUM", daysToComplete: 7 });
+      setTaskForm({ title: "", description: "", defaultAssigneeRole: "SALARIE", priority: "MEDIUM", daysToComplete: 7 });
     } catch (err: any) { setFormError(err?.message ?? "Erreur."); }
     finally { setSavingTask(false); }
   };
@@ -226,7 +226,7 @@ export default function TemplateDetailPage() {
                     {step.tasks.length} tâche{step.tasks.length !== 1 ? "s" : ""}
                   </span>
                   <button
-                    onClick={() => { setActiveStepId(step.id); setFormError(""); setTaskForm({ title: "", description: "", defaultAssigneeRole: "EMPLOYEE", priority: "MEDIUM", daysToComplete: 7 }); }}
+                    onClick={() => { setActiveStepId(step.id); setFormError(""); setTaskForm({ title: "", description: "", defaultAssigneeRole: "SALARIE", priority: "MEDIUM", daysToComplete: 7 }); }}
                     className={`flex items-center gap-1 text-xs font-semibold ${c.text} hover:opacity-80 transition-opacity px-2.5 py-1 rounded-lg ${c.light}`}
                   >
                     <Plus className="w-3.5 h-3.5" /> Ajouter
@@ -346,9 +346,9 @@ export default function TemplateDetailPage() {
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-1.5">Acteur</label>
                   <select value={taskForm.defaultAssigneeRole} onChange={(e) => setTaskForm((f) => ({ ...f, defaultAssigneeRole: e.target.value }))} className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                    <option value="EMPLOYEE">Collaborateur</option>
+                    <option value="SALARIE">Collaborateur</option>
                     <option value="MANAGER">Manager</option>
-                    <option value="ADMIN">Admin</option>
+                    <option value="ADMINRH">Admin</option>
                   </select>
                 </div>
                 <div>

@@ -46,4 +46,13 @@ export class EmployeesResolver {
   ) {
     return this.employeesService.updateEmployee(id, { positionId, departmentId });
   }
+
+  @Mutation(() => Employee, { name: 'updateEmployeeProfile' })
+  updateProfile(
+    @Args('id', { type: () => ID }) id: string,
+    @Args('phone', { nullable: true }) phone?: string,
+    @Args('additionalInfo', { nullable: true }) additionalInfo?: string,
+  ) {
+    return this.employeesService.updateEmployeeProfile(id, { phone, additionalInfo });
+  }
 }

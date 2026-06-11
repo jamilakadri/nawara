@@ -45,11 +45,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmployeesService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const notifications_service_1 = require("../notifications/notifications.service");
 const bcrypt = __importStar(require("bcrypt"));
 let EmployeesService = class EmployeesService {
     prisma;
-    constructor(prisma) {
+    notifications;
+    constructor(prisma, notifications) {
         this.prisma = prisma;
+        this.notifications = notifications;
     }
     async findAll() {
         const employees = await this.prisma.employee.findMany({
@@ -77,7 +80,7 @@ let EmployeesService = class EmployeesService {
         return this.mapEmployee(emp);
     }
     async findByUserId(userId) {
-        const emp = await this.prisma.employee.findUnique({
+        const emp = await this.prisma.employee.findFirst({
             where: { userId },
             include: {
                 user: true,
@@ -111,7 +114,7 @@ let EmployeesService = class EmployeesService {
                 firstName,
                 lastName,
                 password: hashedPassword,
-                role: 'EMPLOYEE',
+                role: 'SALARIE',
             },
         });
         const employee = await this.prisma.employee.create({
@@ -143,6 +146,24 @@ let EmployeesService = class EmployeesService {
         });
         return this.mapEmployee(emp);
     }
+    async updateEmployeeProfile(id, data) {
+        const emp = await this.prisma.employee.update({
+            where: { id },
+            data,
+            include: {
+                user: true,
+                position: true,
+                department: true,
+                onboarding: true,
+            },
+        });
+        const employeeName = `${emp.user?.firstName ?? ''} ${emp.user?.lastName ?? ''}`.trim();
+        const adminIds = await this.notifications.findAdminUserIds();
+        if (adminIds.length > 0) {
+            await this.notifications.notifyMultipleUsers(adminIds, '📩 Mise à jour du profil salarié', `${employeeName} a mis à jour son profil : téléphone = ${data.phone ?? 'N/A'}, infos supplémentaires = ${data.additionalInfo ?? 'N/A'}.`, 'PROFILE', '/admin/users');
+        }
+        return this.mapEmployee(emp);
+    }
     mapEmployee(emp) {
         return {
             id: emp.id,
@@ -155,6 +176,8 @@ let EmployeesService = class EmployeesService {
             userEmail: emp.user?.email,
             userFirstName: emp.user?.firstName,
             userLastName: emp.user?.lastName,
+            phone: emp.phone,
+            additionalInfo: emp.additionalInfo,
             positionTitle: emp.position?.title,
             departmentName: emp.department?.name,
             onboardingStatus: emp.onboarding?.status,
@@ -166,6 +189,7 @@ let EmployeesService = class EmployeesService {
 exports.EmployeesService = EmployeesService;
 exports.EmployeesService = EmployeesService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        notifications_service_1.NotificationsService])
 ], EmployeesService);
 //# sourceMappingURL=employees.service.js.map

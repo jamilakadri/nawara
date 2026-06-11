@@ -37,7 +37,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
     { name: "Dashboard", href: "/admin", icon: Home },
     { name: "Utilisateurs", href: "/admin/users", icon: UserCog },
     { name: "Départements & Postes", href: "/admin/organization", icon: Building2 },
-    { name: "Employés", href: "/admin/employees", icon: Users },
     { name: "Modèles Onboarding", href: "/admin/templates", icon: LayoutTemplate },
     { name: "Documents", href: "/admin/documents", icon: Folder },
     { name: "Analytics & Rapports", href: "/admin/analytics", icon: BarChart3 },
@@ -55,7 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const employeeLinks = [
     { name: "Mon Parcours", href: "/employee", icon: Home },
     { name: "Mes Tâches", href: "/employee/tasks", icon: ClipboardList },
-    { name: "Mes Documents", href: "/employee/documents", icon: FileText },
+    { name: "Mon Profil", href: "/employee/documents", icon: FileText },
     { name: "Auto-évaluation", href: "/employee/evaluation", icon: BookOpen },
   ];
 
@@ -112,32 +111,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
               (pathname?.startsWith(link.href) && link.href !== `/${role}`);
 
             return (
-              <Link key={link.name} href={link.href}>
-                <div
-                  className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-all duration-200 group cursor-pointer ${
-                    isActive
-                      ? "bg-indigo-50 text-indigo-700 shadow-sm shadow-indigo-100/50"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`flex items-center space-x-3 px-4 py-2.5 rounded-xl transition-all duration-200 group ${
+                  isActive
+                    ? "bg-indigo-50 text-indigo-700 shadow-sm shadow-indigo-100/50"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                }`}
+              >
+                <Icon
+                  className={`w-5 h-5 shrink-0 transition-colors ${
+                    isActive ? "text-indigo-600" : "text-gray-400 group-hover:text-indigo-500"
                   }`}
-                >
-                  <Icon
-                    className={`w-5 h-5 shrink-0 transition-colors ${
-                      isActive
-                        ? "text-indigo-600"
-                        : "text-gray-400 group-hover:text-indigo-500"
-                    }`}
-                  />
-                  <span
-                    className={`font-medium text-sm flex-1 ${
-                      isActive ? "font-semibold" : ""
-                    }`}
-                  >
-                    {link.name}
-                  </span>
-                  {isActive && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-600" />
-                  )}
-                </div>
+                />
+                <span className={`font-medium text-sm flex-1 ${isActive ? "font-semibold" : ""}`}>
+                  {link.name}
+                </span>
+                {isActive && <div className="w-1.5 h-1.5 rounded-full bg-indigo-600" />}
               </Link>
             );
           })}

@@ -10,11 +10,13 @@ exports.EmployeesModule = void 0;
 const common_1 = require("@nestjs/common");
 const employees_service_1 = require("./employees.service");
 const employees_resolver_1 = require("./employees.resolver");
+const notifications_module_1 = require("../notifications/notifications.module");
 let EmployeesModule = class EmployeesModule {
 };
 exports.EmployeesModule = EmployeesModule;
 exports.EmployeesModule = EmployeesModule = __decorate([
     (0, common_1.Module)({
+        imports: [notifications_module_1.NotificationsModule],
         providers: [employees_resolver_1.EmployeesResolver, employees_service_1.EmployeesService],
     })
 ], EmployeesModule);

@@ -1,8 +1,10 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserInput } from './dto/create-user.input';
+import { MailService } from '../mail/mail.service';
 export declare class UsersService {
     private prisma;
-    constructor(prisma: PrismaService);
+    private mailService;
+    constructor(prisma: PrismaService, mailService: MailService);
     create(createUserInput: CreateUserInput): Promise<{
         id: string;
         email: string;

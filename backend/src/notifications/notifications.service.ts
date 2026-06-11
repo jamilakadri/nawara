@@ -94,7 +94,7 @@ export class NotificationsService {
    */
   async findAdminUserIds(): Promise<string[]> {
     const admins = await this.prisma.user.findMany({
-      where: { role: 'ADMIN', isActive: true },
+      where: { role: 'ADMINRH', isActive: true },
       select: { id: true },
     });
     return admins.map((a) => a.id);

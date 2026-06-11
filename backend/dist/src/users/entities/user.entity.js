@@ -13,9 +13,9 @@ exports.User = exports.Role = void 0;
 const graphql_1 = require("@nestjs/graphql");
 var Role;
 (function (Role) {
-    Role["ADMIN"] = "ADMIN";
+    Role["ADMINRH"] = "ADMINRH";
     Role["MANAGER"] = "MANAGER";
-    Role["EMPLOYEE"] = "EMPLOYEE";
+    Role["SALARIE"] = "SALARIE";
 })(Role || (exports.Role = Role = {}));
 (0, graphql_1.registerEnumType)(Role, {
     name: 'Role',
